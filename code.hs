@@ -14,3 +14,13 @@ fmap (+1) [1..3]
 fmap (+1) []
 fmap (+1) (Just 1)
 fmap (+1) (Nothing)
+
+(<*>) :: Functor f => f (a -> b) -> f a -> f b
+-- same goes here BUT everything wrapped in some functorial container "f" even the function
+data Maybe a = Just a | Nothing -- refresher
+-- Examples
+
+Just (+1) <*> Just 1
+Just (+1) <*> Nothing
+Nothing   <*> Just 1
+Nothing   <*> Nothing

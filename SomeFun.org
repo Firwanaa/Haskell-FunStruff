@@ -8,6 +8,7 @@
 - [[#typeclasses][Typeclasses]]
   - [[#function-application-operator-][Function Application Operator ($)]]
   - [[#functor-fmap--][Functor (fmap) || (<$>)]]
+  - [[#applicative-functor-][Applicative Functor (<*>)]]
 
 * Typeclasses
 ** Function Application Operator ($)
@@ -32,4 +33,18 @@ fmap (+1) []
 fmap (+1) (Just 1)
 fmap (+1) (Nothing)
 #+end_src
+
+** Applicative Functor (<*>)
+#+begin_src haskell
+(<*>) :: Functor f => f (a -> b) -> f a -> f b
+-- same goes here BUT everything wrapped in some functorial container "f" even the function
+data Maybe a = Just a | Nothing -- refresher
+-- Examples
+
+Just (+1) <*> Just 1
+Just (+1) <*> Nothing
+Nothing   <*> Just 1
+Nothing   <*> Nothing
+#+end_src
+
 
