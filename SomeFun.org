@@ -10,6 +10,7 @@
   - [[#functor-fmap--][Functor (fmap) || (<$>)]]
   - [[#applicative-functor-][Applicative Functor (<*>)]]
   - [[#monad--bind-operator][Monad >>= (bind operator)]]
+  - [[#lets-compare][Lets Compare]]
 
 * Typeclasses
 ** Function Application Operator ($)
@@ -59,5 +60,55 @@ Just 1  >>= \x -> Just (x+1)
 Just 1  >>= \x -> Nothing
 Nothing >>= \x -> Just (x+1)
 Nothing >>= \x -> Nothing
+#+end_src
+
+** Lets Compare
+#+begin_src haskell
+-- using "Either" container
+-- data Either a b = Left a | Right b
+-- Right is success and Left is failure
+-- ($)
+-- ($) :: (a  ->  b) ->    a ->    b
+show $ 1
+-- > "1"
+
+-- (<$>) fmap
+-- (<$>) :: Functor f => (a -> b) -> f a -> f b
+show <$> Right 1
+-- > Right "1"
+(<$>) show (Right 1)
+-- > Right "1" -- it took the vlaue 1 as number,unwrapped it, and wrapped it again as string "1"
+show <$> Left "string"
+-- Left "string"
+show <$> Left 0 -- Left is failure, like Nothing in Maybe
+-- > Left 0
+
+-- (<*>)
+-- (<*>) :: Functor f => f (a -> b) -> f a -> f b
+Right show <*> Right 1
+-- > Right "1"
+(<*>) (Right show) (Right 1) -- same thing, just using prefix
+Right show <*> Left "string"
+-- > Left "string" -- returning (Left "string") without applying show, see next two examples
+(<*>) (Right (+1)) (Right 1)
+-- > Right 2
+(<*>) (Right (+1)) (Left 1)
+-- > Left 1
+(<*>) (Left show) (Left 1)
+-- > error !
+
+-- (>>=)
+-- (>>=) :: Monad m => m a -> (a -> m b) -> m b -- the context here is Monad.
+Right 1 >>= (\x -> Right (show x))
+-- > Right "1"
+Left  1 >>= (\x -> Right (show x))
+-- > Left 1 -- fail case
+-- using prefix
+(>>=) (Left 1) (\x -> Right (show x))
+-- > Left 1 -- fail
+Right 1 >>= (\x -> Left (show x))
+-- > Left "1" -- unwrap the numeric value, wrap it with "Left" and make it string using "show"
+Left "1" >>= (\x -> Left (show x))
+-- > Left "1"
 #+end_src
 
