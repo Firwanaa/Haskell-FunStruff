@@ -24,3 +24,12 @@ Just (+1) <*> Just 1
 Just (+1) <*> Nothing
 Nothing   <*> Just 1
 Nothing   <*> Nothing
+
+(>>=) :: Monad m => m a -> (a -> m b) -> m b -- the context here is Monad.
+-- (m b): "b" is a value wrapped in a monadic container
+-- Examples
+Just 1  >>= \x -> Just (x+1)
+--m  a  ->  (a -> m       b) will result in   (m b)
+Just 1  >>= \x -> Nothing
+Nothing >>= \x -> Just (x+1)
+Nothing >>= \x -> Nothing
