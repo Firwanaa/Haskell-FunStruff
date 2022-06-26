@@ -113,3 +113,4 @@ Left "1" >>= (\x -> Left (show x))
 #+end_src
 
 Reference [[https://youtu.be/YaLR6VaoWrA][Link]]
+Note: Some videos in the above mentioned link contains few mistakes.
