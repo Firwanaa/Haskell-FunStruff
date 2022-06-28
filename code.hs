@@ -34,6 +34,48 @@ Just 1  >>= \x -> Nothing
 Nothing >>= \x -> Just (x+1)
 Nothing >>= \x -> Nothing
 
+-- more examples
+maybeadd :: Num b => Maybe b -> b -> Maybe b
+maybeadd mx y = mx >>= (\x -> Just $ x+y)
+-- maybeadd Nothing 1
+-- > Nothing
+-- Maybeadd (Just 1) 1
+-- > Just 2
+maybeadd1:: Num b => Maybe b -> Maybe b -> Maybe b
+maybeadd1 mx my = mx >>= (\x -> my >>= (\y -> Just $ x+y))
+
+-- maybeadd1 Nothing (Just 1)
+-- >Nothing
+-- maybedd1 (Just 2) (Just 3)
+-- >Just 3
+monadd:: (Monad m, Num b) => Maybe b -> Maybe b -> Maybe b -- noticed the name?  😬 with double d
+-- monadd mx my = mx >>= (\x -> my >>= (\y -> return $ x+y))
+-- well, we can just use do notation
+monadd mx my = do
+  x <- mx
+  y <- my
+  return $ x + y
+
+-- fail :: String -> m a -- it can be used to return error msg
+
+-- >>
+-- (>>) :: Monad m => m a -> m b -> m b
+m >> n = m >>= \_ -> n -- we also can just use do notation
+-- Nothing >> Just 1
+-- > Nothing
+
+-- Just 1 >> Just 2
+-- > Just 2
+
+-- Just 1 >> Nothing
+-- > Nothing
+
+return a >>= k = k a
+
+m >>= return = m
+
+m >>= (\x -> k x >>= h) = (m >>= k) >>= h
+
 -- using "Either" container
 -- data Either a b = Left a | Right b
 -- Right is success and Left is failure
